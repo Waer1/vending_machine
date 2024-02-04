@@ -37,3 +37,8 @@ lerna-debug.log*
 
 
 .env*
+
+db/*
+
+monitoring/data/*
+
