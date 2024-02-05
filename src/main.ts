@@ -16,14 +16,14 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // use http exception filter
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   // set global prefix
   app.setGlobalPrefix('api/v1');
 
   const configService = app.get(ConfigService);
 
-  const port = configService.get('PORT');
+  const port = configService.get<number>('PORT', 3000);
 
   console.log(`Server is running on port ${port}`);
 

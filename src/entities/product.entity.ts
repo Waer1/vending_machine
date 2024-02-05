@@ -22,7 +22,7 @@ export class Product {
   @Column()
   productName: string;
 
-  @ManyToOne(() => User, (user) => user.productsSold)
+  @ManyToOne(() => User, (user) => user.productsSold, { cascade: true })
   seller: User;
 
   @OneToMany(() => ProductTransaction, (transaction) => transaction.product, {

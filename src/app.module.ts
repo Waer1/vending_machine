@@ -1,22 +1,27 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PostgresDBModule } from './db/postgresDB.module';
-import { AppConfig } from './config';
+import { AppConfig, DatabaseConfig } from './config';
 import { AuthModule } from './auth/auth.module';
-import databaseConfig from './config/database.config';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
+import { VendingModule } from './vending/vending.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
       envFilePath: '.env',
-      load: [AppConfig, databaseConfig],
+      isGlobal: true,
+      load: [AppConfig, DatabaseConfig],
     }),
     PostgresDBModule,
     AuthModule,
+    UsersModule,
+    ProductsModule,
     PrometheusModule.register(),
+    VendingModule,
   ],
   controllers: [],
   providers: [
