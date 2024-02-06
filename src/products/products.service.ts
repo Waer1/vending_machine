@@ -18,10 +18,24 @@ export class ProductsService {
     private readonly userService: UsersService,
   ) {}
 
+  /**
+   * Retrieves all products.
+   *
+   * @return {Promise<Product[]>} A promise that resolves to an array of all products.
+   */
   async findAll(): Promise<Product[]> {
     return this.productRepository.find();
   }
 
+  /**
+   * Retrieves a product by its ID.
+   *
+   * @param {number} id The ID of the product to retrieve.
+   * @param {boolean} populateSeller Whether to populate the seller of the product.
+   *
+   * @throws {NotFoundException} If no product with the given ID exists.
+   * @return {Promise<Product>} A promise that resolves to the product with the given ID.
+   */
   async findOne(id: number, populateSeller: boolean = false): Promise<Product> {
     const product = await this.productRepository.findOne({
       where: { id },
@@ -33,6 +47,13 @@ export class ProductsService {
     return product;
   }
 
+  /**
+   * Retrieves all products by a seller's ID.
+   *
+   * @param {number} sellerId The ID of the seller whose products to retrieve.
+   *
+   * @return {Promise<Product[]>} A promise that resolves to an array of the seller's products.
+   */
   async findBySellerId(sellerId: number): Promise<Product[]> {
     return this.productRepository.find({
       where: {
@@ -43,6 +64,13 @@ export class ProductsService {
     });
   }
 
+  /**
+   * Creates a new product.
+   *
+   * @param {CreateProductDto} createProductDto The details of the product to create.
+   *
+   * @return {Promise<Product>} A promise that resolves to the newly created product.
+   */
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const user = await this.userService.findOne(createProductDto.sellerId);
     const product = this.productRepository.create({
@@ -52,6 +80,16 @@ export class ProductsService {
     return this.productRepository.save(product);
   }
 
+  /**
+   * Updates a product.
+   *
+   * @param {number} userId The ID of the user making the request.
+   * @param {number} ProductId The ID of the product to update.
+   * @param {UpdateProductDto} updatedFileds The new details of the product.
+   *
+   * @throws {UnauthorizedException} If the user is not authorized to update the product.
+   * @return {Promise<Product>} A promise that resolves to the updated product.
+   */
   async update(
     userId: number,
     ProductId: number,
@@ -69,6 +107,14 @@ export class ProductsService {
     return this.productRepository.save(updatedProduct);
   }
 
+  /**
+   * Updates a product.
+   *
+   * @param {number} productId The ID of the product to update.
+   * @param {UpdateProductDto} updatedFields The new details of the product.
+   *
+   * @return {Promise<Product>} A promise that resolves to the updated product.
+   */
   async updateProduct(
     productId: number,
     updatedFields: UpdateProductDto,
@@ -79,6 +125,15 @@ export class ProductsService {
     return this.productRepository.save(product);
   }
 
+  /**
+   * Deletes a product.
+   *
+   * @param {number} userId The ID of the user making the request.
+   * @param {number} productId The ID of the product to delete.
+   *
+   * @throws {UnauthorizedException} If the user is not authorized to delete the product.
+   * @return {Promise<void>} A promise that resolves when the product has been deleted.
+   */
   async remove(userId: number, productId: number): Promise<void> {
     const product = await this.findOne(productId, true);
 

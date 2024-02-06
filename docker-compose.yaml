@@ -15,38 +15,25 @@ services:
     networks:
       - global-network
 
-  postgres_admin:
-    image: dpage/pgadmin4
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-    ports:
-      - '15432:80'
-    networks:
-      - global-network
-
   backend:
     build:
       context: .
-      dockerfile: ./apps/microservice-books-club/dockerfile.dev
+      dockerfile: ./dockerfile
     restart: unless-stopped
     ports:
       - '3000:3000'
     env_file:
       - .env
     depends_on:
-      - rabbitmq
       - postgres
-      - auth
-      - books
     volumes:
-      - .:/usr/src/app # any change to base folder should be reflected
+      - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev microservice-books-club # overrides CMD from dockerfile
+    command: npm run start:dev
     networks:
       - global-network
 
 networks:
   global-network:
+    name: global-network
     driver: bridge

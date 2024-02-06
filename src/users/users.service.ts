@@ -20,6 +20,14 @@ export class UsersService {
     private configService: ConfigService,
   ) {}
 
+  /**
+   * Finds a user by their ID.
+   *
+   * @param {number} id The ID of the user to find.
+   *
+   * @throws {NotFoundException} If no user with the given ID exists.
+   * @return {Promise<User>} A promise that resolves to the user with the given ID.
+   */
   async findById(id: number): Promise<User> {
     const user = await this.userRepositry.findOne({
       where: { id },
@@ -32,6 +40,14 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Finds a user by their username.
+   *
+   * @param {string} username The username of the user to find.
+   *
+   * @throws {NotFoundException} If no user with the given username exists.
+   * @return {Promise<User>} A promise that resolves to the user with the given username.
+   */
   async findOnebyUsername(username: string): Promise<User> {
     const user = await this.userRepositry.findOne({
       where: { username },
@@ -50,6 +66,14 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Updates a user.
+   *
+   * @param {number} id The ID of the user to update.
+   * @param {User} user The new details of the user.
+   *
+   * @return {Promise<User>} A promise that resolves to the updated user.
+   */
   async update(id: number, user: User): Promise<User> {
     const updatedUser = await this.userRepositry.save({ ...user, id });
 
@@ -175,6 +199,15 @@ export class UsersService {
     return loginUser;
   }
 
+  /**
+   * Validates a password by hashing it with a given salt and comparing it to a given hashed password.
+   *
+   * @param {string} password The password to validate.
+   * @param {string} hashedPassword The hashed password to compare to.
+   * @param {string} salt The salt to use when hashing the password.
+   *
+   * @return {Promise<boolean>} A promise that resolves to true if the password is valid and false otherwise.
+   */
   async validatePassword(
     password: string,
     hashedPassword: string,
@@ -184,6 +217,13 @@ export class UsersService {
     return hash === hashedPassword;
   }
 
+  /**
+   * Hashes a password and generates a salt.
+   *
+   * @param {string} password The password to hash.
+   *
+   * @return {Promise<{ salt: string; hashedPassword: string }>} A promise that resolves to an object containing the salt and the hashed password.
+   */
   async hashPassword(
     password: string,
   ): Promise<{ salt: string; hashedPassword: string }> {

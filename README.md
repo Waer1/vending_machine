@@ -5,69 +5,112 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <h2 align="center">MicroService Club Api</h2>
 
-## Description
+# Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is an vending_machine with authentiction , authorization. its a machine which you can signup in it as buyer or seller and do crud operation over the products
 
-## Installation
+# The project uses the following technologies:
 
-```bash
-$ npm install
-```
+- Backend Framework: Node.js
+- Language: TypeScript
+- Server Framework: NestJS
+- monitoring: Prometheus (cadvisor - nodejs promClient - node-exporter) and Grafana
+- containerization: Docker
+- CI/CD: Github Actions
+- Database: PostgreSQL
+- Authentication Middlewares: PassportJS
+- Token Generation: JWT
 
-## Running the app
+# Getting Started
+
+# Running the application
+
+## Clone the repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+  git clone https://github.com/Waer1/vending_machine
+  cd vending_machine
 ```
 
-## Test
+## Prerequisites
+
+Before you can run this app, you need to have a PostgreSQL database set up. Create a database and add the database information to a `.env` file in the root of the project. Here's an example of what your `.env` file should look like:
+
+```dotenv
+NODE_ENV=development
+
+# Postgres DB
+DB_HOST=postgres
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=books-db
+
+# PostGres Auth DB
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=books-db
+
+# JWT
+JWT_SECRET=secret
+JWT_EXPIRATION=15d
+BCRYPT_SALT=12
+
+```
+
+In this .env file:
+
+## Required for the node application
+- `DB_HOST` is the host of your PostgreSQL database
+- `DB_PORT` is the port of your PostgreSQL database
+- `DB_USERNAME` is the username of your PostgreSQL database
+- `DB_PASSWORD` is the password of your PostgreSQL database
+- `DB_NAME` is the name of your PostgreSQL database
+
+### Required for the PostgreSQL database
+- `POSTGRES_USER` is the username of your PostgreSQL database
+- `POSTGRES_PASSWORD` is the password of your PostgreSQL database
+- `POSTGRES_DB` is the name of your PostgreSQL database
+
+### Required for the JWT & Authentication
+- `JWT_SECRET` is the secret key for JWT
+- `JWT_EXPIRATION` is the expiration time for JWT
+- `BCRYPT_SALT` is the salt for bcrypt
+
+#### IMPORTANT NOTE: before running the app you need to add the envs to the .env file in the root of the project
+
+## Running with Docker using local code
+
+You can run the app by pulling the Docker image from Docker Hub and then running the container.
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  docker-compose up
 ```
 
-## Support
+it will build the image and run the container
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+now you can access the app on http://localhost:3000/ and have look at postman collection to test the api
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## setup the monitoring and logging
 
-## License
+you can setup the monitoring and logging by running the following command
 
-Nest is [MIT licensed](LICENSE).
+```bash
+  cd .\monitoring
+  docker-compose -f docker-compose.yaml up
+```
+
+now you can access promtheus on http://localhost:9090/ and grafana on http://localhost:3010/ also test the nodejs metrics on http://localhost:3000/api/v1/metrics
+with user name and password for grafana is waer and waer
+
+![Alt text](./docs-images/image_2024-01-27_22-27-47.png)
+
+![Alt text](./docs-images/image_2024-01-27_22-56-21.png)
+
+
+## Testing the application
+
+have a look at postman collection to test the api
